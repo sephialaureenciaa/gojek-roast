@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { useMemo, CSSProperties, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 
@@ -33,7 +34,12 @@ const rejectStyle = {
   borderColor: "#ff1744",
 };
 
-export default function FileDropzone() {
+export default function FileUpload({
+  handleUpload,
+}: {
+  handleUpload: (file: File) => void;
+}) {
+  const [file, setFile] = useState<File>();
   const [previewUrl, setPreviewUrl] = useState<string>();
   const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } =
     useDropzone({
@@ -42,6 +48,7 @@ export default function FileDropzone() {
       },
       maxFiles: 1,
       onDrop: (acceptedFiles) => {
+        setFile(acceptedFiles[0]);
         setPreviewUrl(URL.createObjectURL(acceptedFiles[0]));
       },
     });
@@ -60,10 +67,10 @@ export default function FileDropzone() {
     // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
     if (previewUrl === undefined) return;
     return () => URL.revokeObjectURL(previewUrl);
-  }, [previewUrl]);
+  }, [file]);
 
   return (
-    <div>
+    <div className="flex flex-col gap-6">
       <div {...getRootProps({ style })}>
         <input {...getInputProps()} />
         <p>drag & drop ur gojek wrapped file here</p>
@@ -71,6 +78,9 @@ export default function FileDropzone() {
       {previewUrl !== undefined && (
         <iframe src={previewUrl} className="w-full h-[50vh] pt-6" />
       )}
+      <Button className="w-full" onClick={handleUpload}>
+        get roasted
+      </Button>
     </div>
   );
 }
