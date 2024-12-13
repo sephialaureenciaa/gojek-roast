@@ -33,6 +33,7 @@ export default function Home() {
       ) : (
         <>submitted!</>
       )}
+      <p className="self-center text-sm text-black opacity-35">© 2024 gojekroast.me</p>
     </main>
   );
 }

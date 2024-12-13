@@ -73,7 +73,8 @@ export default function FileUpload({
     <div className="flex flex-col gap-6">
       <div {...getRootProps({ style })}>
         <input {...getInputProps()} />
-        <p>drag & drop ur gojek wrapped file here</p>
+        <p>drop ur gojek wrapped file here</p>
+        <p className="text-xs mt-2">p.s. don't worry, we don't store your files</p>
       </div>
       {previewUrl !== undefined && (
         <iframe src={previewUrl} className="w-full h-[50vh] pt-6" />
