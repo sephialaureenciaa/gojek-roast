@@ -7,7 +7,7 @@ import HowToSheet from "@/app/components/HowToSheet";
 export default function Home() {
   const [submitted, setSubmmited] = useState(false);
 
-  const handleUpload = async (file: File) => {
+  const handleUpload = async (file: File | undefined) => {
     if (file === undefined) return;
 
     const formData = new FormData();

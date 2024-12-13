@@ -37,7 +37,7 @@ const rejectStyle = {
 export default function FileUpload({
   handleUpload,
 }: {
-  handleUpload: (file: File) => void;
+  handleUpload: (file: File | undefined) => void;
 }) {
   const [file, setFile] = useState<File>();
   const [previewUrl, setPreviewUrl] = useState<string>();
@@ -78,7 +78,7 @@ export default function FileUpload({
       {previewUrl !== undefined && (
         <iframe src={previewUrl} className="w-full h-[50vh] pt-6" />
       )}
-      <Button className="w-full" onClick={handleUpload}>
+      <Button className="w-full" onClick={() => handleUpload(file)}>
         get roasted
       </Button>
     </div>
