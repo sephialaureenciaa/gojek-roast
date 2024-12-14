@@ -28,6 +28,7 @@ const baseStyle: CSSProperties = {
   color: "#bdbdbd",
   outline: "none",
   transition: "border .24s ease-in-out",
+  textAlign: "center",
 };
 
 const focusedStyle = {

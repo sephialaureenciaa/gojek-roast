@@ -51,9 +51,9 @@ export default function Home() {
   };
 
   return (
-    <main className="flex flex-col mx-auto gap-6 p-16 max-w-lg min-h-screen pb-6">
+    <main className="flex flex-col align-center gap-6 py-16 px-8 max-w-lg mx-auto min-h-screen pb-6">
       <div>
-        <h1 className="text-xl font-bold text-center text-gray-800">
+        <h1 className="text-xl font-bold text-center text-gray-800 mb-1">
           Gojek Roast 🛵 🔥
         </h1>
         <h3 className="text-md text-center text-gray-800">
@@ -69,8 +69,8 @@ export default function Home() {
       )}
       <HowToSheet />
       <div className="self-center">
-        <p className="self-center text-center text-sm text-black opacity-35">
-          check out the code{" "}
+        <p className="self-center text-center text-sm text-black opacity-35 mb-2">
+          check out the code on{" "}
           <a
             className="underline"
             href="https://github.com/sephialaureenciaa/gojek-roast"
