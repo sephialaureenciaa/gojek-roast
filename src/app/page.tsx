@@ -7,11 +7,14 @@ import HowToSheet from "@/app/components/HowToSheet";
 export default function Home() {
   const [submitted, setSubmmited] = useState(false);
 
-  const handleUpload = async (file: File | undefined) => {
-    if (file === undefined) return;
+  const handleUpload = async (images: string[] | undefined) => {
+    if (images === undefined) return;
 
     const formData = new FormData();
-    formData.append("file", file);
+    for (const image of images) {
+      formData.append("file", image);
+    }
+
     const res = await fetch("/api/generate", {
       method: "POST",
       body: formData,
@@ -33,7 +36,9 @@ export default function Home() {
       ) : (
         <>submitted!</>
       )}
-      <p className="self-center text-sm text-black opacity-35">© 2024 gojekroast.me</p>
+      <p className="self-center text-sm text-black opacity-35">
+        © 2024 gojekroast.me
+      </p>
     </main>
   );
 }
