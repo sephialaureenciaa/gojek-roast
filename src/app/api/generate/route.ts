@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
       fetch: fetch,
     });
 
+    const t1 = Date.now();
     const response = await client.chat.completions.create({
       model: "gpt-4o",
       messages: [
@@ -70,7 +71,7 @@ export async function POST(req: NextRequest) {
     env.USAGE.writeDataPoint({
       blobs: [cf?.city || "", cf?.country || "" ],
       // The number of images, prompt tokens, and completion tokens
-      doubles: [images.length, response.usage?.prompt_tokens || 0, response.usage?.completion_tokens || 0],
+      doubles: [images.length, response.usage?.prompt_tokens || 0, response.usage?.completion_tokens || 0, Date.now() - t1],
     })
 
     return new Response(
