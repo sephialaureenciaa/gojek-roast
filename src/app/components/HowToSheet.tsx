@@ -45,12 +45,12 @@ export default function HowToSheet() {
           className="self-center text-sm text-black opacity-35 underline hover:opacity-50 hover:underline-offset-4"
           variant="link"
         >
-          how to get ur gojek wrapped
+          how to get your gojek wrapped
         </Button>
       </SheetTrigger>
       <SheetContent side="bottom">
         <SheetHeader>
-          <SheetTitle>how to get ur gojek wrapped</SheetTitle>
+          <SheetTitle>how to get your gojek wrapped</SheetTitle>
         </SheetHeader>
 
         <div className="flex flex-col justify-center items-center py-4">

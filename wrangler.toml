@@ -10,3 +10,7 @@ minify = true
 
 # Use the new Workers + Assets to host the static frontend files
 assets = { directory = ".worker-next/assets", binding = "ASSETS" }
+
+# wrangler.toml (wrangler v3.88.0^)
+[observability.logs]
+enabled = true

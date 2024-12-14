@@ -3,12 +3,13 @@
 import { Button } from "@/components/ui/button";
 import { useMemo, CSSProperties, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
+import { Loader2 } from "lucide-react";
 import * as PDFJS from "pdfjs-dist/legacy/build/pdf.mjs";
 
 // provide worker for PDF.js
 PDFJS.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/legacy/build/pdf.worker.min.mjs",
-  import.meta.url,
+  import.meta.url
 ).toString();
 
 // Type assertion to prevent "Type 'string' is not assignable to type ..." errors
@@ -43,8 +44,10 @@ const rejectStyle = {
 
 export default function FileUpload({
   handleUpload,
+  isSubmitting,
 }: {
-  handleUpload: (images: string[] | undefined) => void;
+  handleUpload: (images: string[] | undefined) => Promise<void>;
+  isSubmitting: boolean;
 }) {
   const [images, setImages] = useState<string[]>();
   const [previewUrl, setPreviewUrl] = useState<string>();
@@ -67,7 +70,7 @@ export default function FileUpload({
       ...(isDragAccept ? acceptStyle : {}),
       ...(isDragReject ? rejectStyle : {}),
     }),
-    [isFocused, isDragAccept, isDragReject],
+    [isFocused, isDragAccept, isDragReject]
   );
 
   useEffect(() => {
@@ -80,17 +83,31 @@ export default function FileUpload({
     <div className="flex flex-col gap-6">
       <div {...getRootProps({ style })}>
         <input {...getInputProps()} />
-        <p>drop ur gojek wrapped file here</p>
+        <p>drop your gojek wrapped file here</p>
         <p className="text-xs mt-2">
           p.s. don&apos;t worry, we don&apos;t store your files
         </p>
       </div>
-      {previewUrl !== undefined && (
-        <iframe src={previewUrl} className="w-full h-[50vh] pt-6" />
+      {!isSubmitting ? (
+        <Button
+          className="w-full"
+          onClick={async () => {
+            await handleUpload(images);
+            setPreviewUrl(undefined);
+            setImages(undefined);
+          }}
+        >
+          get roasted
+        </Button>
+      ) : (
+        <Button className="w-full" disabled>
+          <Loader2 className="animate-spin" />
+          crafting your roast
+        </Button>
       )}
-      <Button className="w-full" onClick={() => handleUpload(images)}>
-        get roasted
-      </Button>
+      {previewUrl !== undefined && (
+        <iframe src={previewUrl} className="w-full h-[50vh]" />
+      )}
     </div>
   );
 }
@@ -98,7 +115,7 @@ export default function FileUpload({
 // Adapted from https://github.com/mozilla/pdf.js/blob/master/examples/node/pdf2png/pdf2png.mjs
 const pdfToImage = async (
   setImages: (images: string[]) => void,
-  file: File,
+  file: File
 ) => {
   const data = new Uint8Array(await file.arrayBuffer());
   try {
@@ -112,7 +129,7 @@ const pdfToImage = async (
       // @ts-ignore
       const canvasAndContext = canvasFactory.create(
         viewport.width,
-        viewport.height,
+        viewport.height
       );
       const renderContext = {
         canvasContext: canvasAndContext.context,
