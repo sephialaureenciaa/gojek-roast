@@ -21,3 +21,6 @@ routes = [
   { pattern = "gojekroast.com", custom_domain = true },
   { pattern = "www.gojekroast.com", custom_domain = true }
 ]
+
+[[analytics_engine_datasets]]
+binding = "USAGE"

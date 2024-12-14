@@ -18,12 +18,17 @@ Do not:
 `;
 
 export async function POST(req: NextRequest) {
+  const { env, cf } = await getCloudflareContext()
+
   const formData = await req.formData();
   const images = formData.getAll("file");
 
   try {
     const client = new OpenAI({
-      apiKey: (await getCloudflareContext()).env.OPENAI_API_KEY,
+      apiKey: env.OPENAI_API_KEY,
+      // By default, the OpenAI client uses node-fetch,
+      // but the workerd runtime does not implement node:https.
+      // so instead, we pass the fetch function available in the runtime.
       fetch: fetch,
     });
 
@@ -61,6 +66,12 @@ export async function POST(req: NextRequest) {
         { status: 500 }
       );
     }
+
+    env.USAGE.writeDataPoint({
+      blobs: [cf?.city || "", cf?.country || "" ],
+      // The number of images, prompt tokens, and completion tokens
+      doubles: [images.length, response.usage?.prompt_tokens || 0, response.usage?.completion_tokens || 0],
+    })
 
     return new Response(
       JSON.stringify({ response: response.choices[0].message.content }),
