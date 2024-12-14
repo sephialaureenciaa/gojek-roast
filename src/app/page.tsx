@@ -51,10 +51,15 @@ export default function Home() {
   };
 
   return (
-    <main className="flex flex-col mx-auto gap-6 p-16 max-w-lg h-screen mb-4">
-      <h1 className="text-xl font-bold text-center text-gray-800">
-        Exposing Your Gojek Life, One Ride at a Time 🛵 🔍
-      </h1>
+    <main className="flex flex-col mx-auto gap-6 p-16 max-w-lg min-h-screen pb-6">
+      <div>
+        <h1 className="text-xl font-bold text-center text-gray-800">
+          Gojek Roast 🛵 🔥
+        </h1>
+        <h3 className="text-md text-center text-gray-800">
+          exposing your gojek life, one ride at a time
+        </h3>
+      </div>
       <FileUpload handleUpload={handleUpload} isSubmitting={submitting} />
       {error && (
         <p className="text-center text-sm whitespace-pre-line">{error}</p>
@@ -63,9 +68,22 @@ export default function Home() {
         <p className="whitespace-pre-line">{formatText(response.response)}</p>
       )}
       <HowToSheet />
-      <p className="self-center text-sm text-black opacity-35 mb-4">
-        © 2024 gojekroast.me
-      </p>
+      <div className="self-center">
+        <p className="self-center text-center text-sm text-black opacity-35">
+          check out the code{" "}
+          <a
+            className="underline"
+            href="https://github.com/sephialaureenciaa/gojek-roast"
+            target="_blank"
+          >
+            Github
+          </a>
+          .
+        </p>
+        <p className="self-center text-center text-sm text-black opacity-35">
+          © 2024 gojekroast.me
+        </p>
+      </div>
     </main>
   );
 }
