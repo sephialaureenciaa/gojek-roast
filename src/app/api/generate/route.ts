@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
         },
       ],
       temperature: 0.6,
-      max_tokens: 600,
+      max_tokens: 700,
     });
 
     if (response.choices[0].message.refusal !== null) {
