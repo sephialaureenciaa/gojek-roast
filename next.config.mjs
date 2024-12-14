@@ -6,9 +6,6 @@ const nextConfig = {
     config.resolve.alias.canvas = false;
     return config;
   },
-  headers: {
-    'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
-  }
 };
 
 export default nextConfig;
