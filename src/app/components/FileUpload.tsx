@@ -5,6 +5,7 @@ import { useMemo, CSSProperties, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { Loader2 } from "lucide-react";
 import * as PDFJS from "pdfjs-dist/legacy/build/pdf.mjs";
+import { cn } from "@/lib/utils";
 
 // provide worker for PDF.js
 PDFJS.GlobalWorkerOptions.workerSrc = new URL(
@@ -52,15 +53,18 @@ export default function FileUpload({
 }) {
   const [images, setImages] = useState<string[]>();
   const [previewUrl, setPreviewUrl] = useState<string>();
+  const [processingImages, setProcessingImages] = useState(false);
   const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } =
     useDropzone({
       accept: {
         "application/pdf": [".pdf"],
       },
       maxFiles: 1,
-      onDrop: (acceptedFiles) => {
+      onDrop: async (acceptedFiles) => {
+        setProcessingImages(true);
         setPreviewUrl(URL.createObjectURL(acceptedFiles[0]));
-        pdfToImage(setImages, acceptedFiles[0]);
+        await pdfToImage(setImages, acceptedFiles[0]);
+        setProcessingImages(false);
       },
     });
 
@@ -91,7 +95,8 @@ export default function FileUpload({
       </div>
       {!isSubmitting ? (
         <Button
-          className="w-full"
+          className={cn("w-full", processingImages && "opacity-50")}
+          disabled={processingImages}
           onClick={async () => {
             await handleUpload(images);
             setPreviewUrl(undefined);
