@@ -17,9 +17,7 @@ enabled = true
 
 routes = [
   { pattern = "gojekroast.me", custom_domain = true },
-  { pattern = "www.gojekroast.me", custom_domain = true },
   { pattern = "gojekroast.com", custom_domain = true },
-  { pattern = "www.gojekroast.com", custom_domain = true }
 ]
 
 [[analytics_engine_datasets]]
