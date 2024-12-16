@@ -54,7 +54,7 @@ export default function HowToSheet() {
         </SheetHeader>
 
         <div className="flex flex-col justify-center items-center py-4">
-          <Carousel setApi={setApi} className="w-full max-w-xs">
+          <Carousel setApi={setApi} className="w-9/12 max-w-xs">
             <CarouselContent>
               <CarouselItem>
                 <Card>
@@ -124,7 +124,7 @@ export default function HowToSheet() {
             <CarouselNext />
           </Carousel>
           <div className="py-2 text-center text-sm text-muted-foreground">
-            Step {current} of {count}
+            step {current} of {count}
           </div>
         </div>
       </SheetContent>
