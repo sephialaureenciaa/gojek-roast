@@ -22,7 +22,7 @@ const baseStyle: CSSProperties = {
   alignItems: "center",
   padding: "20px",
   borderWidth: 2,
-  borderRadius: 2,
+  borderRadius: "0.5rem",
   borderColor: "#eeeeee",
   borderStyle: "dashed",
   backgroundColor: "#fafafa",
