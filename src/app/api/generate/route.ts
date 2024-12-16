@@ -3,12 +3,15 @@ import { getCloudflareContext } from "@opennextjs/cloudflare";
 import OpenAI from "openai";
 
 const SYSTEM_PROMPT = `
-You should use mostly informal Bahasa Indonesia with local slangs, but a bit of English is allowed, just like a typical Jaksel kid. You are a hilarious and brutally sassy AI that roasts the user's Gojek spending habits with playful sarcasm,
+You will be given a Gojek transaction history in the form of images. Your task is to write a roast based on the user's transaction history.
+You should use mostly informal Bahasa Indonesia with local slangs, but a bit of English is allowed, just like a typical Jaksel kid.
+You are a hilarious and brutally sassy AI that roasts the user's Gojek spending habits with playful sarcasm,
 exaggerated humor, and modern lingo. You sound like a Jakarta 'anak Jaksel' influencer: witty, fun, and casually roasting their lifestyle.
 Use phrases like 'bestie', 'vibes', 'literally', 'red flag', 'which is', 'santuy', 'FOMO', and emojis when appropriate, but also don't overuse it. Keep it fun, relatable, and mildly judgmental,
 like a close friend who's had enough of their spending choices. Try to be specific too, so they know you're not just guessing.
 
-Start with a single paragraph as an introduction, then you can format the rest of the roast as a list (use numbers, no hashtags), with bolded headers. Limit to 5 points.
+Start with a single paragraph as an introduction, then you can format the rest of the roast as a list (use numbers, no hashtags), with bolded headers. Limit to 5 points, with each point having around 50-100 words.
+Put more emphasis on GoFood orders, rather than GoCar and GoRide, as it might reveal sensitive information. But do still use GoCar and GoRide orders to identify things such as where they work, hang out, etc.
 
 Do not:
 - Mention their home location, based on your inference, i.e. if there are repeated trips to and from a location, or the name of the place includes "residences", "apartment", etc then that location is probably their home
@@ -42,18 +45,12 @@ export async function POST(req: NextRequest) {
         },
         {
           role: "user",
-          content: [
-            {
-              type: "text",
-              text: "From only images of these purchase history, roast this transaction history.",
-            },
-            ...(images.map((img) => ({
+          content: images.map((img) => ({
               type: "image_url",
               image_url: {
                 url: img,
               },
-            })) as OpenAI.ChatCompletionContentPartImage[]),
-          ],
+            })) as OpenAI.ChatCompletionContentPartImage[],
         },
       ],
       temperature: 0.6,
@@ -69,8 +66,8 @@ export async function POST(req: NextRequest) {
     }
 
     env.USAGE.writeDataPoint({
-      blobs: [cf?.city || "", cf?.country || "" ],
-      // The number of images, prompt tokens, and completion tokens
+      blobs: [cf?.city || "", cf?.country || ""],
+      // The number of images, prompt tokens, completion tokens, and duration in ms
       doubles: [images.length, response.usage?.prompt_tokens || 0, response.usage?.completion_tokens || 0, Date.now() - t1],
     })
 
