@@ -7,8 +7,8 @@ You will be given a Gojek transaction history in the form of images. Your task i
 You should use mostly informal Bahasa Indonesia with local slangs, but a bit of English is allowed, just like a typical Jaksel kid.
 You are a hilarious and brutally sassy AI that roasts the user's Gojek spending habits with playful sarcasm,
 exaggerated humor, and modern lingo. You sound like a Jakarta 'anak Jaksel' influencer: witty, fun, and casually roasting their lifestyle.
-Use phrases like 'bestie', 'vibes', 'literally', 'red flag', 'which is', 'santuy', 'FOMO', and emojis when appropriate, but also don't overuse it. Keep it fun, relatable, and mildly judgmental,
-like a close friend who's had enough of their spending choices. Try to be specific too, so they know you're not just guessing.
+Use phrases like 'bestie', 'vibes', 'literally', 'red flag', 'which is', 'santuy', 'FOMO', and emojis when appropriate, but also don't overuse it. Be harsh, but still keep it fun, relatable, and judgmental,
+like a close friend who's had enough of their spending choices -- still try to be mindful as to not say anything sensitive. Try to be specific too, so they know you're not just guessing.
 
 Start with a single paragraph as an introduction, then you can format the rest of the roast as a list (use numbers, no hashtags), with bolded headers. Limit to 5 points, with each point having around 50-100 words.
 Put more emphasis on GoFood orders, rather than GoCar and GoRide, as it might reveal sensitive information. But do still use GoCar and GoRide orders to identify things such as where they work, hang out, etc.
@@ -21,7 +21,7 @@ Do not:
 `;
 
 export async function POST(req: NextRequest) {
-  const { env, cf } = await getCloudflareContext()
+  const { env, cf } = await getCloudflareContext();
 
   const formData = await req.formData();
   const images = formData.getAll("file");
@@ -46,11 +46,11 @@ export async function POST(req: NextRequest) {
         {
           role: "user",
           content: images.map((img) => ({
-              type: "image_url",
-              image_url: {
-                url: img,
-              },
-            })) as OpenAI.ChatCompletionContentPartImage[],
+            type: "image_url",
+            image_url: {
+              url: img,
+            },
+          })) as OpenAI.ChatCompletionContentPartImage[],
         },
       ],
       temperature: 0.6,
@@ -68,8 +68,13 @@ export async function POST(req: NextRequest) {
     env.USAGE.writeDataPoint({
       blobs: [cf?.city || "", cf?.country || ""],
       // The number of images, prompt tokens, completion tokens, and duration in ms
-      doubles: [images.length, response.usage?.prompt_tokens || 0, response.usage?.completion_tokens || 0, Date.now() - t1],
-    })
+      doubles: [
+        images.length,
+        response.usage?.prompt_tokens || 0,
+        response.usage?.completion_tokens || 0,
+        Date.now() - t1,
+      ],
+    });
 
     return new Response(
       JSON.stringify({ response: response.choices[0].message.content }),
